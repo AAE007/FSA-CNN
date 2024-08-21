@@ -1,0 +1,84 @@
+# Pseudocode for CNN with Fish Swarm Optimization
+
+# Step 1: Initialize Adjustable Parameters
+SET input_size = 5
+SET output_size = 1
+SET learning_rate = 0.0001
+SET num_epochs = 20000
+SET batch_size = 25
+SET channels_1 = 32
+SET channels_2 = 64
+SET n_fish = 10
+SET n_iter = 50
+SET visual = 5
+SET step = 1
+SET delta = 0.1
+
+# Step 2: Load Data from Excel
+LOAD data from "image.xlsx"
+SPLIT data into X_train, y_train, X_test, y_test
+
+# Step 3: Convert Data to Torch Tensors
+CONVERT X_train, y_train, X_test, y_test to torch tensors
+
+# Step 4: Create Dataset and Data Loaders
+CREATE train_dataset from X_train and y_train
+CREATE test_dataset from X_test and y_test
+CREATE train_loader from train_dataset with batch_size
+CREATE test_loader from test_dataset with batch_size
+
+# Step 5: Instantiate the CNN Model
+INITIALIZE CNN model with input_size, output_size, channels_1, channels_2
+
+# Step 6: Define Loss Computation Function
+FUNCTION get_loss(input_size, output_size, parameters):
+    INITIALIZE CNN model with parameters
+    TRAIN the model for num_epochs
+    RETURN test_loss
+
+# Step 7: Define Fish Class
+CLASS Fish:
+    INITIALIZE position in parameter space
+    COMPUTE fitness using get_loss function
+
+# Step 8: Define Fish Swarm Optimization Class
+CLASS FishSwarm:
+    INITIALIZE n_fish, n_iter, visual, step, delta
+    INITIALIZE best_fish, best_fitness, best_position
+    INITIALIZE fishes with random positions
+
+    FOR each fish:
+        CALCULATE fitness
+        UPDATE best_fish, best_fitness, best_position if necessary
+
+    FUNCTION forage(fish):
+        MOVE fish to new position
+        CALCULATE new fitness
+        UPDATE fish's position and fitness if improved
+        UPDATE best_fish, best_fitness, best_position if necessary
+
+    FUNCTION swarm(fish):
+        CALCULATE local center and mean_fitness
+        MOVE fish toward center if mean_fitness is better
+        UPDATE fish's position and fitness if improved
+        UPDATE best_fish, best_fitness, best_position if necessary
+
+    FUNCTION follow(fish):
+        FIND the best local fish
+        MOVE fish toward best local fish
+        UPDATE fish's position and fitness if improved
+        UPDATE best_fish, best_fitness, best_position if necessary
+
+    FUNCTION optimize():
+        FOR each iteration in n_iter:
+            FOR each fish in fishes:
+                CALL forage(fish)
+                CALL swarm(fish)
+                CALL follow(fish)
+            RECORD best_fitness
+
+        PLOT fitness_curve
+
+# Step 9: Run Fish Swarm Optimization
+INITIALIZE FishSwarm with parameters
+CALL optimize function
